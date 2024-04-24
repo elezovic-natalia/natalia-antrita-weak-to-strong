@@ -161,6 +161,21 @@ register_dataset(
     ),
 )
 
+def format_cosmos_qa(ex, rng):
+    # Randomly select one of the answers
+    ans_index = rng.randint(0, 3)
+    ans = ex[f"answer{ans_index}"]
+    txt = f"Context: {ex['context']}\nQuestion: {ex['question']} Answer: {ans}"
+    return dict(txt=txt, hard_label=ans_index)
+
+# Register the dataset
+register_dataset(
+    "cosmos_qa",
+    DatasetConfig(
+        loader=hf_loader("cosmos_qa"),
+        formatter=format_cosmos_qa
+    ),
+)
 
 VALID_DATASETS: list[str] = list(_REGISTRY.keys())
 
