@@ -189,7 +189,7 @@ try:
     register_dataset(
         "ethics_justice",
         DatasetConfig(
-            loader=hf_loader("ethics", "justice"),  # Specify the correct path and subset name
+            loader=hf_loader("hendrycks/ethics", "justice"),  # Specify the correct path and subset name
             formatter=format_ethics_justice
         ),
     )
