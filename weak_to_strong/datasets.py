@@ -184,14 +184,17 @@ def format_ethics_justice(ex, rng):
     hard_label = int(ex['label'])
     return dict(txt=txt, hard_label=hard_label)
 
-# Register the dataset
-register_dataset(
-    "ethics_justice",
-    DatasetConfig(
-        loader=hf_loader("ethics", "justice"),  # Specify the correct path and subset name
-        formatter=format_ethics_justice
-    ),
-)
+try:
+    # Register the dataset
+    register_dataset(
+        "ethics_justice",
+        DatasetConfig(
+            loader=hf_loader("ethics", "justice"),  # Specify the correct path and subset name
+            formatter=format_ethics_justice
+        ),
+    )
+except Exception as e:
+    print(f"An error occurred during dataset registration: {e}")
 
 VALID_DATASETS: list[str] = list(_REGISTRY.keys())
 
