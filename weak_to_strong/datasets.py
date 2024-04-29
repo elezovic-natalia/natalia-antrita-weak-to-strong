@@ -178,23 +178,29 @@ register_dataset(
 )
 
 def format_ethics_justice(ex, rng):
-    # The text itself is the input
     txt = ex['text']
-    # Label is already binary (0 or 1), so we can use it directly as the hard_label
+    hard_label = int(ex['label'])  # 1 or 0
+    return dict(txt=txt, hard_label=hard_label)
+
+register_dataset(
+    "ethics_justice",
+    DatasetConfig(
+        loader=hf_loader("hendrycks/ethics", "justice"), formatter=format_ethics_justice
+    ),
+)
+
+def format_paws(ex, rng):
+    txt = f"Sentence 1: {ex['sentence1']} Sentence 2: {ex['sentence2']}"
     hard_label = int(ex['label'])
     return dict(txt=txt, hard_label=hard_label)
 
-try:
-    # Register the dataset
-    register_dataset(
-        "ethics_justice",
-        DatasetConfig(
-            loader=hf_loader("hendrycks/ethics", "justice"),  # Specify the correct path and subset name
-            formatter=format_ethics_justice
-        ),
-    )
-except Exception as e:
-    print(f"An error occurred during dataset registration: {e}")
+register_dataset(
+    "paws_labeled_final",  # Unique name for the dataset registration.
+    DatasetConfig(
+        loader=hf_loader("paws", "labeled_final", split_names=dict(test="validation")), 
+        formatter=format_paws
+    ),
+)
 
 VALID_DATASETS: list[str] = list(_REGISTRY.keys())
 
